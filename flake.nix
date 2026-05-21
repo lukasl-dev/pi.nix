@@ -69,11 +69,6 @@
         coding-agent = import ./coding-agent/home-manager.nix self;
       };
 
-      hjemModules = rec {
-        default = coding-agent;
-        coding-agent = import ./coding-agent/hjem.nix self;
-      };
-
       overlays = {
         default =
           _final: prev:
