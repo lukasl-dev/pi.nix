@@ -27,7 +27,7 @@
 
       forEachSystem = nixpkgs.lib.genAttrs (import systems);
     in
-    {
+    rec {
       packages = forEachSystem (
         system:
         let
@@ -68,6 +68,7 @@
         default = coding-agent;
         coding-agent = import ./coding-agent/home-manager.nix self;
       };
+      homeManagerModules = homeModules;
 
       overlays = {
         default =
