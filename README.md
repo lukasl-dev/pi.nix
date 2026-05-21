@@ -24,13 +24,15 @@ Or build it locally:
 nix build .#coding-agent --accept-flake-config
 ```
 
-## NixOS
+## Usage
 
 ```nix
 {
   inputs.pi.url = "github:lukasl-dev/pi.nix";
 }
 ```
+
+### NixOS
 
 ```nix
 { inputs, config, ... }:
@@ -52,7 +54,7 @@ nix build .#coding-agent --accept-flake-config
 }
 ```
 
-## Home Manager
+### Home Manager
 
 ```nix
 { inputs, config, ... }:
@@ -69,7 +71,7 @@ nix build .#coding-agent --accept-flake-config
 }
 ```
 
-## Overlay
+### Overlay
 
 ```nix
 { inputs, pkgs, ... }:
@@ -79,7 +81,7 @@ nix build .#coding-agent --accept-flake-config
 }
 ```
 
-## Custom package
+### Custom package
 
 ```nix
 { inputs, pkgs, ... }:
