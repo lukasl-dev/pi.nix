@@ -48,6 +48,33 @@
         }
       );
 
+      lib =
+        let
+          coding-agent = import ./coding-agent/lib.nix {
+            inherit self;
+            inherit (nixpkgs) lib;
+          };
+        in
+        {
+          inherit (coding-agent) mkCodingAgent;
+        };
+
+      nixosModules = rec {
+        default = coding-agent;
+        coding-agent = import ./coding-agent/module.nix self;
+      };
+
+      overlays = {
+        default =
+          _final: prev:
+          let
+            inherit (prev.stdenv.hostPlatform) system;
+          in
+          {
+            pi-coding-agent = self.packages.${system}.coding-agent;
+          };
+      };
+
       formatter = forEachSystem (
         system:
         let
@@ -55,16 +82,5 @@
         in
         pkgs.nixfmt
       );
-
-      overlays = {
-        default = _final: prev: {
-          pi-coding-agent = self.packages.${prev.stdenv.hostPlatform.system}.coding-agent;
-        };
-      };
-
-      nixosModules = rec {
-        default = coding-agent;
-        coding-agent = import ./coding-agent/module.nix self;
-      };
     };
 }
