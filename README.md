@@ -1,222 +1,115 @@
 # pi.nix
 
-A Nix flake for configuring [pi](https://github.com/earendil-works/pi), the terminal coding agent. It gives you:
+A Nix flake for [pi](https://github.com/earendil-works/pi), the terminal coding agent.
 
-- `nix run`
-- `nix build`
-- a NixOS module for declarative setup
-- a Home Manager module for declarative setup
-- a generic package builder for declarative setup (like nvf/nixvim)
+It provides:
 
-## Why
-
-The upstream `pi` repo does not ship a `flake.nix`, so this exists to make pi easy to use from Nix without going through npm/node.
-
-See [#2310](https://github.com/earendil-works/pi/issues/2310) for context.
+- packages for `nix run` / `nix build`
+- NixOS and Home Manager modules
+- an overlay exposing `pkgs.pi-coding-agent`
+- `lib.mkCodingAgent` for building a configured wrapper
 
 > [!IMPORTANT]
-> **This repository is not the official Nix flake of pi.**
+> This is not the official Nix flake for pi. See [earendil-works/pi#2310](https://github.com/earendil-works/pi/issues/2310) for context.
 
-## Build and Run
-
-You can build/run `pi.nix` via the classical Nix way:
+## Quick start
 
 ```bash
-# build locally
-nix build .#coding-agent --accept-flake-config
-
-# run from remote
 nix run github:lukasl-dev/pi.nix --accept-flake-config
 ```
 
-## Usages
+Or build it locally:
 
-This flake offers different ways to use and configure pi.
+```bash
+nix build .#coding-agent --accept-flake-config
+```
 
-### NixOS Module
+## NixOS
 
 ```nix
-# flake.nix
 {
   inputs.pi.url = "github:lukasl-dev/pi.nix";
-  # ...
 }
+```
 
-# pi.nix
-{ inputs, config, pkgs, ... }:
+```nix
+{ inputs, config, ... }:
 {
-  imports = [
-    inputs.pi.nixosModules.default
-  ];
+  imports = [ inputs.pi.nixosModules.default ];
 
   programs.pi.coding-agent = {
     enable = true;
-
-    # custom package
-    # package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.coding-agent;
-
-    # target users
     # users = [ "lukas" ]; # defaults to all normal users
-
-    # appended to the system prompt
-    # rules = ''
-    #   # AGENTS.md
-    #   Be concise.
-    # '';
-
-    # extra skills
+    # rules = ''Be concise.'';
     # skills = [ ./skills/my-skill ];
-
-    # extra extensions
     # extensions = [ ./extensions/my-extension.ts ];
-
-    # extra themes
     # themes = [ ./themes/catppuccin-mocha.json ];
-
-    # extra prompt templates
-    # promptTemplates = [ ./prompts ./prompt-templates/review.md ];
-
-    # ~/.pi/agent/models.json
+    # promptTemplates = [ ./prompts ];
     # models = ./models.json;
-
-    # extra raw CLI args
     # extraArgs = [ "--provider" "openai" "--model" "gpt-5" ];
-
-    # environment variables or env file
-    # environment = {
-    #   OPENAI_API_KEY = config.age.secrets.openai.path;
-    # };
-    # environment = ./pi.env;
+    # environment.OPENAI_API_KEY = config.age.secrets.openai.path;
   };
 }
 ```
 
-### NixOS Overlay
+## Home Manager
 
 ```nix
-# flake.nix
+{ inputs, config, ... }:
 {
-  inputs.pi.url = "github:lukasl-dev/pi.nix";
-  # ...
-}
+  imports = [ inputs.pi.homeModules.default ];
 
-# configuration.nix or a module
+  programs.pi.coding-agent = {
+    enable = true;
+    # rules = ''Be concise.'';
+    # skills = [ ./skills/my-skill ];
+    # models = ./models.json;
+    # environment.OPENAI_API_KEY = config.age.secrets.openai.path;
+  };
+}
+```
+
+## Overlay
+
+```nix
 { inputs, pkgs, ... }:
 {
   nixpkgs.overlays = [ inputs.pi.overlays.default ];
-
-  environment.systemPackages = [
-    # aliases to inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.coding-agent
-    pkgs.pi-coding-agent
-  ];
+  environment.systemPackages = [ pkgs.pi-coding-agent ];
 }
 ```
 
-### Generic Package Builder
+## Custom package
 
 ```nix
-# flake.nix
-{
-  inputs.pi.url = "github:lukasl-dev/pi.nix";
-  # ...
-}
-
-# pi.nix
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 let
-  package = inputs.pi.lib.mkCodingAgent {
+  pi = inputs.pi.lib.mkCodingAgent {
     inherit pkgs;
-    modules = [
-      {
-        pi.coding-agent = {
-          # custom package
-          # package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.coding-agent;
-
-          # appended to the system prompt
-          # rules = ''
-          #   # AGENTS.md
-          #   Be concise.
-          # '';
-
-          # extra skills
-          # skills = [ ./skills/my-skill ];
-
-          # extra extensions
-          # extensions = [ ./extensions/my-extension.ts ];
-
-          # extra themes
-          # themes = [ ./themes/catppuccin-mocha.json ];
-
-          # extra prompt templates
-          # promptTemplates = [ ./prompts ./prompt-templates/review.md ];
-
-          # extra raw CLI args
-          # extraArgs = [ "--provider" "openai" "--model" "gpt-5" ];
-
-          # environment variables or env file
-          # environment = {
-          #   OPENAI_API_KEY = config.age.secrets.openai.path;
-          # };
-          # environment = ./pi.env;
-        };
-      }
-    ];
-    extraSpecialArgs = {};
-  }.package;
+    modules = [{
+      pi.coding-agent = {
+        rules = ''Be concise.'';
+        skills = [ ./skills/my-skill ];
+        extraArgs = [ "--provider" "openai" "--model" "gpt-5" ];
+      };
+    }];
+  };
 in
-...
+pi.package
 ```
 
-### Home Manager Module
+## Options
 
-```nix
-# flake.nix
-{
-  inputs.pi.url = "github:lukasl-dev/pi.nix";
-  # ...
-}
+Common options under `programs.pi.coding-agent` / `pi.coding-agent`:
 
-# pi.nix
-{ inputs, config, pkgs, ... }:
-{
-  imports = [
-    inputs.pi.homeModules.default
-  ];
-
-  programs.pi.coding-agent = {
-    enable = true;
-
-    # custom package
-    # package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.coding-agent;
-
-    # appended to the system prompt
-    # rules = ''
-    #   # AGENTS.md
-    #   Be concise.
-    # '';
-
-    # extra skills
-    # skills = [ ./skills/my-skill ];
-
-    # extra extensions
-    # extensions = [ ./extensions/my-extension.ts ];
-
-    # extra themes
-    # themes = [ ./themes/catppuccin-mocha.json ];
-
-    # extra prompt templates
-    # promptTemplates = [ ./prompts ./prompt-templates/review.md ];
-
-    # ~/.pi/agent/models.json
-    # models = ./models.json;
-
-    # extra raw CLI args
-    # extraArgs = [ "--provider" "openai" "--model" "gpt-5" ];
-
-    # environment variables or env file
-    # environment = {
-    #   OPENAI_API_KEY = config.age.secrets.openai.path;
-    # };
-    # environment = ./pi.env;
-  };
-}
+- `enable`
+- `package`
+- `rules`
+- `skills`
+- `extensions`
+- `themes`
+- `promptTemplates`
+- `models` (NixOS/Home Manager modules only)
+- `users` (NixOS module only)
+- `extraArgs`
+- `environment`
