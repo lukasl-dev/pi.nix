@@ -23,16 +23,6 @@ in
 
   options.programs.pi.coding-agent = {
     enable = lib.mkEnableOption "pi agent";
-
-    models = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      description = ''
-        Path to a pi models.json file to install as
-        {file}`~/.pi/agent/models.json` for every user managed by hjem.
-      '';
-      example = lib.literalExpression "./models.json";
-    };
   };
 
   config = lib.mkIf cfg.enable (
@@ -41,13 +31,30 @@ in
         environment.systemPackages = [ cfg.finalPackage ];
       }
 
-      (lib.mkIf (cfg.models != null) {
+      {
         hjem.extraModules = [
-          {
-            files.".pi/agent/models.json".source = cfg.models;
-          }
+          (
+            { config, lib, ... }:
+            {
+              options.programs.pi.coding-agent = {
+                models = lib.mkOption {
+                  type = lib.types.nullOr lib.types.path;
+                  default = null;
+                  description = ''
+                    Path to a pi models.json file to install as
+                    {file}`~/.pi/agent/models.json`.
+                  '';
+                  example = lib.literalExpression "./models.json";
+                };
+              };
+
+              config = lib.mkIf (config.programs.pi.coding-agent.models != null) {
+                files.".pi/agent/models.json".source = config.programs.pi.coding-agent.models;
+              };
+            }
+          )
         ];
-      })
+      }
     ]
   );
 }
