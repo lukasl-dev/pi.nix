@@ -10,7 +10,7 @@ It provides:
 - `lib.mkCodingAgent` for building a configured wrapper
 
 > [!IMPORTANT]
-> This is not the official Nix flake for pi. See [earendil-works/pi#2310](https://github.com/earendil-works/pi/issues/2310) for context.
+> This is not the official Nix flake for pi (there isn't one). See [earendil-works/pi#2310](https://github.com/earendil-works/pi/issues/2310) for context.
 
 ## Quick start
 
