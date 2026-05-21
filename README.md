@@ -32,6 +32,19 @@ nix build .#coding-agent --accept-flake-config
 }
 ```
 
+### Binary cache
+
+Build results are pushed to [pi.cachix.org](https://pi.cachix.org). The flake declares the substituter and public key via `nixConfig`, so consumers can use `--accept-flake-config` or configure it explicitly:
+
+```nix
+nix.settings = {
+  extra-substituters = [ "https://pi.cachix.org" ];
+  extra-trusted-public-keys = [
+    "pi.cachix.org-1:lGeoGJaZ5ZDabuRzkcD5EBTNnDM4HJ1vqeOxlWk1Flk="
+  ];
+};
+```
+
 ### NixOS
 
 ```nix
