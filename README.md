@@ -85,8 +85,8 @@ nix build .#coding-agent --accept-flake-config
     # ~/.pi/agent/models.json
     # models = ./models.json;
 
-    # extra raw CLI flags
-    # extraFlags = [ "--provider" "openai" "--model" "gpt-5" ];
+    # extra raw CLI args
+    # extraArgs = [ "--provider" "openai" "--model" "gpt-5" ];
 
     # environment variables or env file
     # environment = {
