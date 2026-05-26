@@ -46,6 +46,45 @@ in
       '';
     };
 
+    npmExtensions = lib.mkOption {
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options = {
+            name = lib.mkOption {
+              type = lib.types.str;
+              description = "npm package name (e.g. `@firstpick/pi-extension-brave-search`).";
+            };
+            version = lib.mkOption {
+              type = lib.types.str;
+              description = "Package version to fetch from the npm registry.";
+            };
+            hash = lib.mkOption {
+              type = lib.types.str;
+              description = "SRI hash of the npm tarball (use `nix-prefetch-url` to find it).";
+            };
+          };
+        }
+      );
+      default = [ ];
+      description = ''
+        npm extensions to fetch at build time and pass to pi via `--extension` flags.
+
+        Each extension is fetched from the npm registry, its dependencies are
+        installed, and the resulting directory is passed to pi as an extension path.
+        Pi discovers the entry point via `package.json` `pi.extensions` field,
+        `index.ts`, or `index.js`.
+      '';
+      example = lib.literalExpression ''
+        [
+          {
+            name = "@firstpick/pi-extension-brave-search";
+            version = "1.0.0";
+            hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+          }
+        ]
+      '';
+    };
+
     skills = lib.mkOption {
       type = lib.types.listOf lib.types.path;
       default = [ ];
@@ -130,12 +169,44 @@ in
         package
         rules
         extensions
+        npmExtensions
         skills
         themes
         promptTemplates
         extraArgs
         environment
         ;
+
+      buildNpmExtension =
+        ext:
+        let
+          safeName = builtins.replaceStrings [ "/" "@" ] [ "-" "" ] ext.name;
+          bareName = if lib.hasPrefix "@" ext.name then lib.last (lib.splitString "/" ext.name) else ext.name;
+          tarballName = "${bareName}-${ext.version}.tgz";
+          registryUrl = "https://registry.npmjs.org/${ext.name}/-/${tarballName}";
+
+          tarball = pkgs.fetchurl {
+            url = registryUrl;
+            hash = ext.hash;
+          };
+        in
+        pkgs.stdenv.mkDerivation {
+          pname = "pi-ext-${safeName}";
+          version = ext.version;
+
+          src = tarball;
+
+          dontUnpack = true;
+
+          installPhase = ''
+            mkdir -p $out
+            tar xzf $src --strip-components=1 -C $out
+          '';
+
+          dontFixup = true;
+        };
+
+      npmExtensionPaths = map (ext: buildNpmExtension ext) npmExtensions;
 
       pathFlags =
         flag: paths:
@@ -152,7 +223,7 @@ in
           "${rulesPath}"
         ])
         ++ pathFlags "--skill" skills
-        ++ pathFlags "--extension" extensions
+        ++ pathFlags "--extension" (extensions ++ npmExtensionPaths)
         ++ pathFlags "--theme" themes
         ++ pathFlags "--prompt-template" promptTemplates;
 
