@@ -46,7 +46,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if git diff --quiet --exit-code VERSION.json models.generated.ts package-lock.json; then
+          if git diff --quiet --exit-code VERSION.json models.generated.ts package-lock.json bun.lock coding-agent/bun.nix; then
             echo "No changes to commit"
             exit 0
           fi
@@ -55,7 +55,7 @@ jobs:
 
           push_tag=false
           if [[ "${{ steps.update.outputs.version_changed }}" == "true" ]]; then
-            git add VERSION.json models.generated.ts package-lock.json
+            git add VERSION.json models.generated.ts package-lock.json bun.lock coding-agent/bun.nix
             git commit -m "Update pi to ${version}"
 
             if ! git ls-remote --tags --refs origin "refs/tags/${version}" | grep -q .; then
@@ -63,11 +63,11 @@ jobs:
               push_tag=true
             fi
           else
-            git add models.generated.ts package-lock.json
+            git add models.generated.ts package-lock.json bun.lock coding-agent/bun.nix
             if [[ "${{ steps.update.outputs.models_changed }}" == "true" ]]; then
               git commit -m "Update models"
             else
-              git commit -m "Update package-lock"
+              git commit -m "Update lockfiles"
             fi
           fi
 

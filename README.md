@@ -5,8 +5,9 @@ A Nix flake for [pi](https://github.com/earendil-works/pi), the terminal coding 
 It provides:
 
 - packages for `nix run` / `nix build`
+- a default npm-built package and an optional Bun-built variant
 - NixOS and Home Manager modules
-- an overlay exposing `pkgs.pi-coding-agent`
+- an overlay exposing `pkgs.pi-coding-agent` and `pkgs.pi-coding-agent-bun`
 - `lib.mkCodingAgent` for building a configured wrapper
 
 > [!IMPORTANT]
@@ -24,6 +25,12 @@ Or build it locally:
 nix build .#coding-agent --accept-flake-config
 ```
 
+To build the Bun-based variant instead:
+
+```bash
+nix build .#coding-agent-bun --accept-flake-config
+```
+
 ## Usage
 
 ```nix
@@ -34,13 +41,17 @@ nix build .#coding-agent --accept-flake-config
 
 ### Binary cache
 
-Build results are pushed to [pi.cachix.org](https://pi.cachix.org). The flake declares the substituter and public key via `nixConfig`, so consumers can use `--accept-flake-config` or configure it explicitly:
+Build results are pushed to [pi.cachix.org](https://pi.cachix.org), and the Bun toolchain is fetched through the nix-community cache used by `bun2nix`. The flake declares both substituters and public keys via `nixConfig`, so consumers can use `--accept-flake-config` or configure them explicitly:
 
 ```nix
 nix.settings = {
-  extra-substituters = [ "https://pi.cachix.org" ];
+  extra-substituters = [
+    "https://pi.cachix.org"
+    "https://nix-community.cachix.org"
+  ];
   extra-trusted-public-keys = [
     "pi.cachix.org-1:lGeoGJaZ5ZDabuRzkcD5EBTNnDM4HJ1vqeOxlWk1Flk="
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
 };
 ```
@@ -89,7 +100,10 @@ nix.settings = {
 { inputs, pkgs, ... }:
 {
   nixpkgs.overlays = [ inputs.pi.overlays.default ];
-  environment.systemPackages = [ pkgs.pi-coding-agent ];
+  environment.systemPackages = [
+    pkgs.pi-coding-agent
+    # or pkgs.pi-coding-agent-bun
+  ];
 }
 ```
 
@@ -110,6 +124,17 @@ let
   };
 in
 pi.package
+```
+
+### Selecting the Bun package
+
+The NixOS/Home Manager modules still default to the npm-built package. To opt into the Bun-built variant, set `package` explicitly:
+
+```nix
+{ inputs, pkgs, ... }:
+{
+  programs.pi.coding-agent.package = inputs.pi.packages.${pkgs.system}.coding-agent-bun;
+}
 ```
 
 ## Options
