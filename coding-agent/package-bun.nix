@@ -3,6 +3,8 @@
   stdenv,
   bun2nix,
   bun,
+  nodejs,
+  python3,
   makeWrapper,
   pkg-config,
   pixman,
@@ -75,6 +77,24 @@ stdenv.mkDerivation {
   };
 
   dontRunLifecycleScripts = true;
+
+  # Bun lifecycle scripts are disabled above, so native modules that rely on
+  # install hooks need to be built explicitly. Without this, requiring
+  # `canvas` fails at runtime because build/Release/canvas.node is missing.
+  postBunNodeModulesInstallPhase = ''
+    pushd node_modules/canvas
+    PATH=${nodejs}/bin:$PATH PYTHON=${python3}/bin/python3 \
+      ${nodejs}/bin/node \
+      ${nodejs}/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js \
+      rebuild --nodedir=${nodejs}
+
+    releaseDir=$(mktemp -d)
+    cp build/Release/*.node "$releaseDir"/
+    rm -rf build
+    mkdir -p build/Release
+    cp "$releaseDir"/*.node build/Release/
+    popd
+  '';
 
   postPatch = ''
     cp ${../bun.lock} bun.lock
