@@ -211,11 +211,28 @@ in
       settingsPrelude =
         lib.optionalString (settingsPath != null) # bash
           ''
-            if [ -L "$HOME/.pi/agent/settings.json" ]; then
-              rm "$HOME/.pi/agent/settings.json"
+            settings_file="$HOME/.pi/agent/settings.json"
+
+            if [ -L "$settings_file" ]; then
+              rm "$settings_file"
             fi
-            mkdir -p $HOME/.pi/agent
-            install -m 0600 ${settingsPath} "$HOME/.pi/agent/settings.json"
+
+            mkdir -p "$HOME/.pi/agent"
+            tmp="$(mktemp "$HOME/.pi/agent/settings.json.XXXXXX")"
+
+            if [ -f "$settings_file" ]; then
+              ${lib.getExe pkgs.jq} -s '.[0] * .[1]' "$settings_file" ${lib.escapeShellArg settingsPath} > "$tmp"
+            else
+              printf '%s\n' '{}' | ${lib.getExe pkgs.jq} -s '.[0] * .[1]' - ${lib.escapeShellArg settingsPath} > "$tmp"
+            fi
+
+            chmod 0600 "$tmp"
+
+            if [ ! -f "$settings_file" ] || ! cmp -s "$tmp" "$settings_file"; then
+              mv "$tmp" "$settings_file"
+            else
+              rm "$tmp"
+            fi
           '';
 
       argsStr = lib.concatMapStringsSep " " lib.escapeShellArg resourceArgs;
