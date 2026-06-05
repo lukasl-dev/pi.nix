@@ -1,4 +1,4 @@
-#!/usr/bin/env -S nix shell nixpkgs#bash nixpkgs#bun nixpkgs#git nixpkgs#jq nixpkgs#nix nixpkgs#nodejs nixpkgs#npm-lockfile-fix nixpkgs#prefetch-npm-deps -c bash
+#!/usr/bin/env -S nix shell .#update-script-env -c bash
 # shellcheck shell=bash
 set -euo pipefail
 
@@ -9,7 +9,6 @@ models_file=models.generated.ts
 package_lock_file=package-lock.json
 bun_lock_file=bun.lock
 bun_nix_file=coding-agent/bun.nix
-bun2nix_version=2.1.0
 
 die() {
 	echo "$*" >&2
@@ -148,7 +147,7 @@ fi
 echo "Generating Bun lockfiles for $target_rev..."
 pushd "$tmpdir" >/dev/null
 bun install --ignore-scripts
-bunx bun2nix@${bun2nix_version} -o bun.nix
+bun2nix -o bun.nix
 popd >/dev/null
 rewrite_bun_nix "$tmpdir/bun.nix"
 

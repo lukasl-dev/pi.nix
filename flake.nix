@@ -54,11 +54,27 @@
         in
         rec {
           default = coding-agent;
+
           coding-agent = pkgs.callPackage ./coding-agent/package.nix {
             inherit src version npmDepsHash;
           };
           coding-agent-bun = bunPkgs.callPackage ./coding-agent/package-bun.nix {
             inherit src version;
+          };
+
+          update-script-env = pkgs.symlinkJoin {
+            name = "pi-update-script-env";
+            paths = [
+              pkgs.bash
+              pkgs.bun
+              pkgs.git
+              pkgs.jq
+              pkgs.nix
+              pkgs.nodejs
+              pkgs.npm-lockfile-fix
+              pkgs.prefetch-npm-deps
+              bun2nix.packages.${system}.bun2nix
+            ];
           };
         }
       );
