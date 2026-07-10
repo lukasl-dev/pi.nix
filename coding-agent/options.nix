@@ -29,8 +29,8 @@ in
       type = lib.types.nullOr lib.types.path;
       default = null;
       description = ''
-        Path to a pi models.json file to install as
-        {file}`~/.pi/agent/models.json`.
+        Path to a pi models.json file to install as the agent config's
+        {file}`models.json` (default `~/.pi/agent/models.json`; see `configDir`).
       '';
       example = lib.literalExpression "./models.json";
     };
@@ -118,7 +118,26 @@ in
     settings = lib.mkOption {
       type = lib.types.attrs;
       default = { };
-      description = "Contents of ~/.pi/agent/settings.json";
+      description = "Contents of the agent config's settings.json (default ~/.pi/agent/settings.json; see configDir)";
+    };
+
+    configDir = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = ''
+        Directory pi uses for its agent config (settings.json, models.json,
+        sessions, trust.json, etc.). When set, this is exported as
+        `PI_CODING_AGENT_DIR` before launching pi, and the settings/models
+        preludes write into this directory instead of the default
+        `$HOME/.pi/agent/`.
+
+        When null (the default), behavior is unchanged: pi uses
+        `$HOME/.pi/agent` and the preludes write there as before.
+
+        The string is expanded by the wrapper shell at runtime, so it may
+        reference `$HOME` and other environment variables.
+      '';
+      example = "$HOME/.pi/agent";
     };
 
     finalRules = lib.mkOption {
@@ -153,6 +172,7 @@ in
         extraArgs
         environment
         settings
+        configDir
         ;
 
       pathFlags =
@@ -176,6 +196,13 @@ in
 
       envPaths = lib.optionalAttrs (lib.isAttrs environment) environment;
 
+      agentDir = if configDir == null then "$HOME/.pi/agent" else configDir;
+
+      configDirPrelude =
+        lib.optionalString (configDir != null) ''
+          export PI_CODING_AGENT_DIR="${configDir}"
+        '';
+
       envPrelude = lib.optionalString (environment != null) (
         if lib.isAttrs environment then
           lib.concatLines (
@@ -196,12 +223,12 @@ in
       modelsPrelude =
         lib.optionalString (models != null) # bash
           ''
-            if [ -L "$HOME/.pi/agent/models.json" ]; then
-              rm "$HOME/.pi/agent/models.json"
+            if [ -L "${agentDir}/models.json" ]; then
+              rm "${agentDir}/models.json"
             fi
-            if [ ! -f "$HOME/.pi/agent/models.json" ]; then
-              mkdir -p $HOME/.pi/agent
-              install -m 0600 ${models} "$HOME/.pi/agent/models.json"
+            if [ ! -f "${agentDir}/models.json" ]; then
+              mkdir -p "${agentDir}"
+              install -m 0600 ${models} "${agentDir}/models.json"
             fi
           '';
 
@@ -211,14 +238,14 @@ in
       settingsPrelude =
         lib.optionalString (settingsPath != null) # bash
           ''
-            settings_file="$HOME/.pi/agent/settings.json"
+            settings_file="${agentDir}/settings.json"
 
             if [ -L "$settings_file" ]; then
               rm "$settings_file"
             fi
 
-            mkdir -p "$HOME/.pi/agent"
-            tmp="$(mktemp "$HOME/.pi/agent/settings.json.XXXXXX")"
+            mkdir -p "${agentDir}"
+            tmp="$(mktemp "${agentDir}/settings.json.XXXXXX")"
 
             if [ -f "$settings_file" ]; then
               ${lib.getExe pkgs.jq} -s '.[0] * .[1]' "$settings_file" ${lib.escapeShellArg settingsPath} > "$tmp"
@@ -245,11 +272,13 @@ in
           && models == null
           && settingsPath == null
           && extraArgs == [ ]
+          && configDir == null
         then
           package
         else
           pkgs.writeShellScriptBin "pi" # bash
             ''
+              ${configDirPrelude}
               ${envPrelude}
               ${modelsPrelude}
               ${settingsPrelude}
