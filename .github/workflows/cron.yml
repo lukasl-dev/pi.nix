@@ -91,8 +91,8 @@ jobs:
           version="$VERSION"
 
           push_tag=false
+          git add VERSION.json ai package-lock.json bun.lock coding-agent/bun.nix
           if [[ "$VERSION_CHANGED" == "true" ]]; then
-            git add VERSION.json ai package-lock.json bun.lock coding-agent/bun.nix
             git commit -m "Update pi to ${version}"
 
             if ! git ls-remote --tags --refs origin "refs/tags/${version}" | grep -q .; then
@@ -100,12 +100,17 @@ jobs:
               push_tag=true
             fi
           else
-            git add ai package-lock.json bun.lock coding-agent/bun.nix
             if [[ "$MODELS_CHANGED" == "true" ]]; then
               git commit -m "Update models"
             else
               git commit -m "Update lockfiles"
             fi
+          fi
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Updater left uncommitted changes"
+            git status --short
+            exit 1
           fi
 
           git push origin "HEAD:${BRANCH}"
