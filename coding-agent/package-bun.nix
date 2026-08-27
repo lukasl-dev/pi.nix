@@ -142,9 +142,14 @@ stdenv.mkDerivation {
 
   buildPhase = ''
     runHook preBuild
-    for pkg in tui telemetry ai agent protocol client coding-agent; do
+    for pkg in tui telemetry ai agent protocol client; do
       (cd "packages/$pkg" && bun run build)
     done
+    codingAgentBuild=build
+    if grep -qF '"build:unbundled"' packages/coding-agent/package.json; then
+      codingAgentBuild=build:unbundled
+    fi
+    (cd packages/coding-agent && bun run "$codingAgentBuild")
     runHook postBuild
   '';
 
