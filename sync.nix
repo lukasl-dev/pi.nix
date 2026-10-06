@@ -9,6 +9,7 @@ pkgs.writeShellApplication {
   runtimeInputs = with pkgs; [
     bun
     coreutils
+    findutils
     gawk
     git
     gnugrep
@@ -67,6 +68,21 @@ pkgs.writeShellApplication {
       node scripts/generate-coding-agent-install-lock.mjs
 
       bun install --ignore-scripts
+      # Bun has no audit-level=none. Reuse only the workspace exceptions;
+      # registry/install errors and other remaining advisories still fail.
+      # Exact-pin fixes can rewrite manifests, which our pristine-source builds
+      # cannot reproduce. Require an explicit source patch for those changes.
+      find . -name node_modules -prune -o -type f -name package.json -print0 \
+        | sort -z | xargs -0 sha256sum > "$tmpdir/manifests.sha256"
+      bun audit fix --lockfile-only --ignore-scripts ${
+        pkgs.lib.concatMapStringsSep " " (
+          advisory: "--ignore " + pkgs.lib.escapeShellArg advisory.id
+        ) (pkgs.lib.importTOML ./osv-scanner-workspace.toml).IgnoredVulns
+      }
+      if ! sha256sum --check --status "$tmpdir/manifests.sha256"; then
+        echo "Bun audit fix changed package manifests; an explicit source patch is required" >&2
+        exit 1
+      fi
       bun2nix -o bun.nix
       popd >/dev/null
 

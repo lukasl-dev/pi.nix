@@ -308,4 +308,7 @@ Security scans gate the runtime lock separately from the npm and Bun workspace
 locks. Documented build/example-only exceptions live in
 `osv-scanner-workspace.toml` and do not apply to the runtime scan. The updater
 applies available npm audit fixes without requiring every workspace advisory to
-be fixable; the security-scan step remains blocking.
+be fixable. Bun audit fixes run before generating its dependency cache, reusing
+only the workspace advisory exceptions. Fixes that rewrite upstream package
+manifests are rejected because the package builds use pristine upstream sources;
+those need an explicit source patch. The security-scan step remains blocking.
