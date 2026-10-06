@@ -169,7 +169,9 @@ pi.package
 
 ### MCP servers
 
-The `mcp` option matches the contents of Pi's `mcp.json` directly:
+`mcp` accepts an open-ended JSON attribute set matching
+[Pi's `mcp.json` format](https://pi.dev/docs/latest/mcp), without field translation
+or a fixed schema:
 
 ```nix
 programs.pi.coding-agent.mcp = {
@@ -184,27 +186,19 @@ programs.pi.coding-agent.mcp = {
       exposure = "direct";
     };
   };
-  autoEnableCodemode = false;
 };
 ```
 
-This is an open-ended attribute set of JSON values, so new upstream fields can
-be used without updating the module. No fields are renamed or translated. The
-wrapper recursively merges it into `~/.pi/agent/mcp.json` on every invocation,
-respecting `environment.PI_CODING_AGENT_DIR`. Declarative values win, while unmanaged
-servers, fields, and top-level settings are preserved. Removing a declarative
-entry does not delete it from the file. An empty `mcp` attribute set leaves the
-file untouched.
+Like `settings`, it recursively merges into the agent directory's `mcp.json` on
+each invocation (default `~/.pi/agent`, overridden by
+`environment.PI_CODING_AGENT_DIR`). Declared values win; undeclared servers,
+fields and top-level settings remain. Removing a declaration does not delete its
+persisted value; `{ }` leaves the file untouched.
 
-Set `programs.pi.coding-agent.mcp.autoEnableCodemode = false;` to disable Pi's
-automatic codemode activation. Omit the field to leave the existing value or
-Pi's default untouched.
-
-Use Pi's environment-variable references (as above) or command references for
-credentials, not literal secrets: declarative configuration is stored in the
-world-readable Nix store. Stdio executables must be available on `PATH` or use an
-absolute Nix package path; jailed setups must grant access to their dependencies.
-See [Pi's MCP documentation](https://pi.dev/docs/latest/mcp) for server fields.
+Use environment references (as above) or command references for credentials:
+literal secrets enter the world-readable Nix store. Stdio executables need a
+`PATH` entry or absolute Nix package path; jailed setups must expose their
+dependencies.
 
 ### Jail
 
@@ -304,11 +298,9 @@ assembles this offline runtime tree for both variants; the Bun variant still
 compiles and runs with Bun. Development tools and example-extension dependencies
 are not installed, but package documentation, examples and assets are retained.
 
-Security scans gate the runtime lock separately from the npm and Bun workspace
-locks. Documented build/example-only exceptions live in
-`osv-scanner-workspace.toml` and do not apply to the runtime scan. The updater
-applies available npm audit fixes without requiring every workspace advisory to
-be fixable. Bun audit fixes run before generating its dependency cache, reusing
-only the workspace advisory exceptions. Fixes that rewrite upstream package
-manifests are rejected because the package builds use pristine upstream sources;
-those need an explicit source patch. The security-scan step remains blocking.
+The updater repairs both locks with `npm audit fix` and `bun audit fix` before
+generating their dependency caches. npm allows unresolved advisories; Bun allows
+only the documented workspace exceptions in `osv-scanner-workspace.toml`. Bun
+fixes that rewrite package manifests require an explicit source patch, since
+builds use upstream manifests, not the audit-modified copies. Separate blocking scans check the runtime
+and both workspace locks; build/example-only exceptions never apply to runtime.
