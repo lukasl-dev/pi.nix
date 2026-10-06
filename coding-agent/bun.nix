@@ -169,6 +169,7 @@
   "@earendil-works/pi-codemode" = copyPathToStore (workspaceRoot + "/packages/codemode");
   "@earendil-works/pi-coding-agent" = copyPathToStore (workspaceRoot + "/packages/coding-agent");
   "@earendil-works/pi-durable" = copyPathToStore (workspaceRoot + "/packages/durable");
+  "@earendil-works/pi-env" = copyPathToStore (workspaceRoot + "/packages/env");
   "@earendil-works/pi-evals" = copyPathToStore (workspaceRoot + "/packages/evals");
   "@earendil-works/pi-mcp" = copyPathToStore (workspaceRoot + "/packages/mcp");
   "@earendil-works/pi-protocol" = copyPathToStore (workspaceRoot + "/packages/protocol");
@@ -1372,9 +1373,9 @@
     url = "https://registry.npmjs.org/simple-get/-/simple-get-4.0.1.tgz";
     hash = "sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==";
   };
-  "source-map-js@1.2.1" = fetchurl {
-    url = "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz";
-    hash = "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==";
+  "source-map-js@1.2.2" = fetchurl {
+    url = "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz";
+    hash = "sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==";
   };
   "ssh2@1.17.0" = fetchurl {
     url = "https://registry.npmjs.org/ssh2/-/ssh2-1.17.0.tgz";
