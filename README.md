@@ -302,5 +302,6 @@ The updater repairs both locks with `npm audit fix` and `bun audit fix` before
 generating their dependency caches. npm allows unresolved advisories; Bun allows
 only the documented workspace exceptions in `osv-scanner-workspace.toml`. Bun
 fixes that rewrite package manifests require an explicit source patch, since
-builds use upstream manifests, not the audit-modified copies. Separate blocking scans check the runtime
-and both workspace locks; build/example-only exceptions never apply to runtime.
+builds use upstream manifests, not the audit-modified copies. Separate blocking
+scans check the runtime and both workspace locks; build/example-only exceptions
+never apply to runtime.
