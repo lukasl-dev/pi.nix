@@ -107,6 +107,7 @@ nix.settings = {
     # settings = {
     #   model = "gpt-5";
     # };
+    # mcp.mcpServers.docs.url = "https://example.com/mcp";
     # jail.enable = true;
     # extraArgs = [ "--provider" "openai" "--model" "gpt-5" ];
     # environment.PI_CODING_AGENT_DIR.value = "/path/to/pi-agent";
@@ -165,6 +166,45 @@ let
 in
 pi.package
 ```
+
+### MCP servers
+
+The `mcp` option matches the contents of Pi's `mcp.json` directly:
+
+```nix
+programs.pi.coding-agent.mcp = {
+  mcpServers = {
+    filesystem = {
+      command = "npx";
+      args = [ "-y" "@modelcontextprotocol/server-filesystem" "." ];
+    };
+    docs = {
+      url = "https://example.com/mcp";
+      headers.Authorization = "Bearer \${DOCS_TOKEN}";
+      exposure = "direct";
+    };
+  };
+  autoEnableCodemode = false;
+};
+```
+
+This is an open-ended attribute set of JSON values, so new upstream fields can
+be used without updating the module. No fields are renamed or translated. The
+wrapper recursively merges it into `~/.pi/agent/mcp.json` on every invocation,
+respecting `environment.PI_CODING_AGENT_DIR`. Declarative values win, while unmanaged
+servers, fields, and top-level settings are preserved. Removing a declarative
+entry does not delete it from the file. An empty `mcp` attribute set leaves the
+file untouched.
+
+Set `programs.pi.coding-agent.mcp.autoEnableCodemode = false;` to disable Pi's
+automatic codemode activation. Omit the field to leave the existing value or
+Pi's default untouched.
+
+Use Pi's environment-variable references (as above) or command references for
+credentials, not literal secrets: declarative configuration is stored in the
+world-readable Nix store. Stdio executables must be available on `PATH` or use an
+absolute Nix package path; jailed setups must grant access to their dependencies.
+See [Pi's MCP documentation](https://pi.dev/docs/latest/mcp) for server fields.
 
 ### Jail
 
@@ -238,6 +278,7 @@ Common options under `programs.pi.coding-agent` / `pi.coding-agent` are listed b
 - `extraArgs`
 - `environment`
 - `settings`
+- `mcp`
 
 Generate the complete option reference in Markdown or HTML with:
 

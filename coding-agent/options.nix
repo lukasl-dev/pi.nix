@@ -239,6 +239,39 @@ in
       '';
     };
 
+    mcp = lib.mkOption {
+      type = lib.types.attrsOf (pkgs.formats.json { }).type;
+      default = { };
+      description = ''
+        Contents of `mcp.json` in pi's agent configuration directory, as an
+        open-ended attribute set of JSON values matching pi's upstream format.
+        Recursively merged into the file on each invocation.
+        Declarative values override existing values; unmanaged entries are kept.
+        Removing an entry here does not remove it from the file. An empty
+        attribute set leaves the file untouched.
+
+        The directory can be overridden with `environment.PI_CODING_AGENT_DIR`.
+        Use pi's environment-variable or command references for credentials;
+        literal values are stored in the world-readable Nix store.
+      '';
+      example = lib.literalExpression ''
+        {
+          mcpServers = {
+            filesystem = {
+              command = "npx";
+              args = [ "-y" "@modelcontextprotocol/server-filesystem" "." ];
+            };
+            docs = {
+              url = "https://example.com/mcp";
+              headers.Authorization = "Bearer ''${DOCS_TOKEN}";
+              exposure = "direct";
+            };
+          };
+          autoEnableCodemode = false;
+        }
+      '';
+    };
+
     finalRules = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       internal = true;
@@ -272,6 +305,7 @@ in
         extraArgs
         environment
         settings
+        mcp
         ;
 
       pathFlags =
@@ -322,7 +356,7 @@ in
           ''
       );
 
-      configDirPrelude = lib.optionalString (models != null || settings != { }) ''
+      configDirPrelude = lib.optionalString (models != null || settings != { } || mcpPath != null) ''
         PI_CODING_AGENT_DIR="''${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
       '';
 
@@ -370,28 +404,31 @@ in
       settingsPath =
         if settings == { } then null else pkgs.writeText "pi-settings.json" (builtins.toJSON settings);
 
-      settingsPrelude =
-        lib.optionalString (settingsPath != null) # bash
-          ''
-            settings_file="$PI_CODING_AGENT_DIR/settings.json"
+      mcpPath = if mcp == { } then null else pkgs.writeText "pi-mcp.json" (builtins.toJSON mcp);
 
-            if [ -L "$settings_file" ]; then
-              rm "$settings_file"
+      mergeConfigPrelude =
+        filename: patchPath:
+        lib.optionalString (patchPath != null) # bash
+          ''
+            config_file="$PI_CODING_AGENT_DIR/${filename}"
+
+            if [ -L "$config_file" ]; then
+              rm "$config_file"
             fi
 
             mkdir -p "$PI_CODING_AGENT_DIR"
-            tmp="$(mktemp "$PI_CODING_AGENT_DIR/settings.json.XXXXXX")"
+            tmp="$(mktemp "$PI_CODING_AGENT_DIR/${filename}.XXXXXX")"
 
-            if [ -f "$settings_file" ]; then
-              ${lib.getExe pkgs.jq} -s '.[0] * .[1]' "$settings_file" ${lib.escapeShellArg settingsPath} > "$tmp"
+            if [ -f "$config_file" ]; then
+              ${lib.getExe pkgs.jq} -s '.[0] * .[1]' "$config_file" ${lib.escapeShellArg patchPath} > "$tmp"
             else
-              printf '%s\n' '{}' | ${lib.getExe pkgs.jq} -s '.[0] * .[1]' - ${lib.escapeShellArg settingsPath} > "$tmp"
+              printf '%s\n' '{}' | ${lib.getExe pkgs.jq} -s '.[0] * .[1]' - ${lib.escapeShellArg patchPath} > "$tmp"
             fi
 
             chmod 0600 "$tmp"
 
-            if [ ! -f "$settings_file" ] || ! cmp -s "$tmp" "$settings_file"; then
-              mv "$tmp" "$settings_file"
+            if [ ! -f "$config_file" ] || ! cmp -s "$tmp" "$config_file"; then
+              mv "$tmp" "$config_file"
             else
               rm "$tmp"
             fi
@@ -406,6 +443,7 @@ in
           && environment == null
           && models == null
           && settingsPath == null
+          && mcpPath == null
           && extraArgs == [ ]
         then
           package
@@ -415,7 +453,8 @@ in
               ${envPrelude}
               ${configDirPrelude}
               ${modelsPrelude}
-              ${settingsPrelude}
+              ${mergeConfigPrelude "settings.json" settingsPath}
+              ${mergeConfigPrelude "mcp.json" mcpPath}
 
               case "''${1-}" in install|remove|uninstall|update|list|config|auth|mcp)
                   exec ${lib.escapeShellArg (lib.getExe package)} "$@"
