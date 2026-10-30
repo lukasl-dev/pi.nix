@@ -287,8 +287,9 @@ respectively.
 ## Maintenance
 
 Temporary upstream workarounds live in `patch.nix`. The updater applies them
-before regenerating the npm and Bun lockfiles; package builds use the committed
-lockfiles without network access. Remove each workaround when upstream fixes it.
+before regenerating the npm and Bun lockfiles; both package builds apply the
+same workarounds and use the committed lockfiles without network access. Remove
+each workaround when upstream fixes it.
 
 Both builders compile with the full workspace dependencies, then pack the public
 workspace packages and install only the coding agent's runtime dependency tree.
@@ -302,6 +303,6 @@ The updater repairs both locks with `npm audit fix` and `bun audit fix` before
 generating their dependency caches. npm allows unresolved advisories; Bun allows
 only the documented workspace exceptions in `osv-scanner-workspace.toml`. Bun
 fixes that rewrite package manifests require an explicit source patch, since
-builds use upstream manifests, not the audit-modified copies. Separate blocking
+builds do not use the audit-modified copies. Separate blocking
 scans check the runtime and both workspace locks; build/example-only exceptions
 never apply to runtime.

@@ -5,6 +5,7 @@
   src,
   version,
   npmDepsHash,
+  patch,
 }:
 let
   workspacePackages = buildNpmPackage {
@@ -15,6 +16,7 @@ let
     npmRebuildFlags = [ "--ignore-scripts" ];
 
     postPatch = ''
+      ${patch}/bin/pi-patch
       cp ${../package-lock.json} package-lock.json
     '';
 

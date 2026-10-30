@@ -6,6 +6,7 @@
   callPackage,
   src,
   version,
+  patch,
 }:
 let
   bunInstallFlags =
@@ -45,6 +46,7 @@ let
     dontRunLifecycleScripts = true;
 
     postPatch = ''
+      ${patch}/bin/pi-patch
       cp ${../bun.lock} bun.lock
     '';
 
