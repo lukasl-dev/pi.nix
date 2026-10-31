@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, patch }:
 
 pkgs.writeShellApplication {
   name = "pi-regenerate-models";
@@ -7,6 +7,7 @@ pkgs.writeShellApplication {
     jq
     nix
     nodejs
+    patch
   ];
   text = # bash
     ''
@@ -27,6 +28,7 @@ pkgs.writeShellApplication {
       cp package-lock.json "$tmpdir/package-lock.json"
 
       pushd "$tmpdir" >/dev/null
+      pi-patch
       npm ci --ignore-scripts
 
       npm run generate-models --workspace=packages/ai

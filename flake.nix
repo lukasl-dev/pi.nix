@@ -93,7 +93,7 @@
           };
 
           regenerateModels = import ./regenerate-models.nix {
-            inherit pkgs;
+            inherit pkgs patch;
           };
 
           update = import ./update.nix {
