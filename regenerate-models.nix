@@ -29,9 +29,10 @@ pkgs.writeShellApplication {
 
       pushd "$tmpdir" >/dev/null
       pi-patch
-      npm ci --ignore-scripts
+      npm ci --ignore-scripts --no-audit
 
       npm run generate-models --workspace=packages/ai
+      npm run check:model-data --workspace=packages/ai
       popd >/dev/null
 
       generated="$tmpdir/packages/ai/src"
@@ -41,7 +42,7 @@ pkgs.writeShellApplication {
       cp "$generated/providers"/*.models.ts "$output/providers/"
       cp -R "$generated/providers/data" "$output/providers/"
 
-      rm -rf ai models.generated.ts
+      rm -rf ai
       mv "$output" ai
       echo "Updated generated AI model data for $rev"
     '';

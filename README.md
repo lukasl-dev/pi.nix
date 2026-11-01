@@ -286,6 +286,23 @@ respectively.
 
 ## Maintenance
 
+Package and model updates run in separate daily workflows. The package workflow
+runs `nix run .#sync`, scans dependencies, and builds both packages. The model
+workflow runs `nix run .#regenerate-models` and builds both packages without
+security scans or npm auditing. Model refreshes use the packaged Pi version and
+committed locks, and may change only `ai/`. Package updates keep the existing
+catalogue; incompatible catalogue/source changes fail the builds before publication.
+`nix run .#update` remains a local convenience that runs both
+generators in sequence. Model-only changes also skip the ordinary CI security
+job; mixed changes do not.
+
+The workflows share a concurrency group, so they cannot run simultaneously.
+GitHub normally retains only one pending run in a group: a newer pending run
+can replace an older one, even across these workflows. This is not a durable
+queue. Each run checks out the current default branch; if it advances during
+validation, publication fails and the update must be rerun. Version changes
+retain the existing upstream-version tag convention.
+
 Temporary upstream workarounds live in `patch.nix`. The updater applies them
 before regenerating the npm and Bun lockfiles; both package builds apply the
 same workarounds and use the committed lockfiles without network access. Remove

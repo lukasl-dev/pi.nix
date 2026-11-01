@@ -9,8 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: read
     outputs:
       docs: ${{ steps.filter.outputs.docs }}
+      non_ai: ${{ steps.security_filter.outputs.non_ai }}
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
@@ -25,6 +27,15 @@ jobs:
               - 'flake.nix'
               - 'flake.lock'
               - '.github/workflows/ci.yaml'
+
+      - uses: dorny/paths-filter@d1c1ffe0248fe513906c8e24db8ea791d46f8590 # v3
+        id: security_filter
+        with:
+          predicate-quantifier: every
+          filters: |
+            non_ai:
+              - '**'
+              - '!ai/**'
 
   docs:
     needs: changes
@@ -61,6 +72,8 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref_name == github.event.repository.default_branch }}
 
   security:
+    needs: changes
+    if: ${{ needs.changes.outputs.non_ai == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
