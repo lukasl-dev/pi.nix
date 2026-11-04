@@ -3,15 +3,3 @@
 [[IgnoredVulns]]
 id = "GHSA-mqxh-6gq7-558m"
 reason = "False positive: OSV Scanner treats Bun's workspace reference as the package version; the workspace package is newer than the fixed version 0.79.0."
-
-[[IgnoredVulns]]
-id = "GHSA-vfj7-8cjw-p6xm"
-reason = "braces is used by shx for trusted, fixed build-script patterns. It is absent from the runtime install lock and is not shipped. No fixed braces release is available."
-
-[[IgnoredVulns]]
-id = "GHSA-86w9-cpqp-85rv"
-reason = "node-forge belongs to the Gondolin example workspace, not the coding-agent runtime closure. The example and its dependency are not executed during the build, and node-forge is not shipped. No fixed release is available."
-
-[[IgnoredVulns]]
-id = "GHSA-mrhx-c7xc-m3w5"
-reason = "Zod 3 is required by sandbox-runtime, a root development dependency and optional sandbox example; it is absent from the installed runtime lock. The example source is shipped but its dependency is not. Remove this exception when a compatible fixed Zod is available."
