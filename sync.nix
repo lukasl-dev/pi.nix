@@ -86,7 +86,7 @@ pkgs.writeShellApplication {
       popd >/dev/null
 
       sed -i '/^  fetchurl,$/a\  workspaceRoot ? throw "coding-agent/bun.nix requires workspaceRoot (the upstream pi source root)",' "$tmpdir/bun.nix"
-      sed -Ei 's|copyPathToStore \.\/packages\/([^ );]+)|copyPathToStore (workspaceRoot + "/packages/\1")|g' "$tmpdir/bun.nix"
+      sed -Ei 's|copyPathToStore \.\/([^ );]+)|copyPathToStore (workspaceRoot + "/\1")|g' "$tmpdir/bun.nix"
 
       npm_deps_hash=$(prefetch-npm-deps "$tmpdir/package-lock.json" | tail -n1)
 
