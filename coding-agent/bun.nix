@@ -283,6 +283,7 @@
     url = "https://registry.npmjs.org/@earendil-works/gondolin/-/gondolin-0.14.0.tgz";
     hash = "sha512-MSw+EGcqFJeyKHdXEfm+nMRr74ytT4x8DGIohav0oPCHeVQAB9AajquM94cv2xqvIU3VDAaZZVC07IXsOY6OVQ==";
   };
+  "@earendil-works/p3" = copyPathToStore (workspaceRoot + "/apps/p3");
   "@earendil-works/pi-agent-core" = copyPathToStore (workspaceRoot + "/packages/agent");
   "@earendil-works/pi-ai" = copyPathToStore (workspaceRoot + "/packages/ai");
   "@earendil-works/pi-codemode" = copyPathToStore (workspaceRoot + "/packages/codemode");
@@ -418,9 +419,9 @@
     url = "https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.12.tgz";
     hash = "sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==";
   };
-  "@google/genai@2.21.0" = fetchurl {
-    url = "https://registry.npmjs.org/@google/genai/-/genai-2.21.0.tgz";
-    hash = "sha512-+PDtco2/Z0ONdzCGekCoCT+O1VJS9xJQNN4XzQpXG/t3El/SWWMkCWlFRO1KmivOHPa4Q0VjUYu1HBKCZ/v33Q==";
+  "@google/genai@2.32.0" = fetchurl {
+    url = "https://registry.npmjs.org/@google/genai/-/genai-2.32.0.tgz";
+    hash = "sha512-60c79uXpR0a47bmGqDxbXEBuQUalNmwo5mx5kqb91jIW4FoqpsLSt86DeVhRhtH5+s/16Wqxt3sXzFQn2U1OHQ==";
   };
   "@img/colour@1.1.0" = fetchurl {
     url = "https://registry.npmjs.org/@img/colour/-/colour-1.1.0.tgz";
@@ -1403,9 +1404,9 @@
     url = "https://registry.npmjs.org/once/-/once-1.4.0.tgz";
     hash = "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==";
   };
-  "openai@7.19.0" = fetchurl {
-    url = "https://registry.npmjs.org/openai/-/openai-7.19.0.tgz";
-    hash = "sha512-MX2s3u2L5racTO0CC/SWpCOasJQBCJrqLKXK+l82cAhdeF8mPMBEe/gxMm0ZFa2xpKpOFLRjxv5afYEZbBXmbQ==";
+  "openai@7.59.0" = fetchurl {
+    url = "https://registry.npmjs.org/openai/-/openai-7.59.0.tgz";
+    hash = "sha512-wPYKJkLPFEdNJ2tThSg4jE1Ptsv4X3u8g8LIvu0Qz/UIhsKeCzl73rl48PtQsDVrJL/ku0liXOsbyd2TsRsPJw==";
   };
   "p-retry@4.6.2" = fetchurl {
     url = "https://registry.npmjs.org/p-retry/-/p-retry-4.6.2.tgz";
@@ -1429,7 +1430,6 @@
     hash = "sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==";
   };
   "pi-extension-custom-provider-anthropic" = copyPathToStore (workspaceRoot + "/packages/coding-agent/examples/extensions/custom-provider-anthropic");
-  "pi-extension-custom-provider-gitlab-duo" = copyPathToStore (workspaceRoot + "/packages/coding-agent/examples/extensions/custom-provider-gitlab-duo");
   "pi-extension-gondolin" = copyPathToStore (workspaceRoot + "/packages/coding-agent/examples/extensions/gondolin");
   "pi-extension-with-deps" = copyPathToStore (workspaceRoot + "/packages/coding-agent/examples/extensions/with-deps");
   "picocolors@1.1.1" = fetchurl {
@@ -1652,9 +1652,9 @@
     url = "https://registry.npmjs.org/undici/-/undici-7.30.1.tgz";
     hash = "sha512-03KrMbjIFDWQR5RNPrSw3bd1r12JpyFQl9/yxjUbJtqkjmllqC5lFjZh6ujeuJCKr8EOQvRW872Oy/az+nLYxg==";
   };
-  "undici@8.12.3" = fetchurl {
-    url = "https://registry.npmjs.org/undici/-/undici-8.12.3.tgz";
-    hash = "sha512-+fdndUTwBP86cVjihTp21hZHo7d6oj1c/47XPA3lL8mM0XHs+C4EkcjmgRsFnFk2f/UONGDy9ItBItmXsLOQHw==";
+  "undici@8.12.4" = fetchurl {
+    url = "https://registry.npmjs.org/undici/-/undici-8.12.4.tgz";
+    hash = "sha512-8Mx+uNKKER2bA4AdtedkqRbwUCIJFr2nJckXRe5yrDqzePqwLP7VNcctN8/XdmDSbF7mS+jJKIszlL+vbam1VA==";
   };
   "unenv@2.0.0-rc.24" = fetchurl {
     url = "https://registry.npmjs.org/unenv/-/unenv-2.0.0-rc.24.tgz";

@@ -19,18 +19,19 @@
       "name": "p2",
       "version": "0.0.3",
       "dependencies": {
-        "@earendil-works/chord": "1.5.2",
+        "@earendil-works/chord": "1.6.0",
         "@earendil-works/design-tokens": "0.1.0",
         "@earendil-works/elanor-fonts": "0.1.0",
         "@earendil-works/elanor-icons-react": "0.1.0",
         "@earendil-works/elanor-react": "0.1.0",
-        "@earendil-works/pi-ai": "1.5.2",
-        "@earendil-works/pi-codemode": "1.5.2",
-        "@earendil-works/pi-durable": "1.5.2",
-        "@earendil-works/pi-env": "1.5.2",
-        "@earendil-works/pi-mcp": "1.5.2",
-        "@earendil-works/pi-schema": "1.5.2",
-        "@earendil-works/pi-tui": "1.5.2",
+        "@earendil-works/pi-ai": "1.6.0",
+        "@earendil-works/pi-codemode": "1.6.0",
+        "@earendil-works/pi-durable": "1.6.0",
+        "@earendil-works/pi-env": "1.6.0",
+        "@earendil-works/pi-mcp": "1.6.0",
+        "@earendil-works/pi-schema": "1.6.0",
+        "@earendil-works/pi-telemetry": "1.6.0",
+        "@earendil-works/pi-tui": "1.6.0",
         "diff": "8.0.4",
         "discord.js": "14.28.1",
         "esbuild": "0.28.2",
@@ -40,7 +41,7 @@
         "proper-lockfile": "4.1.2",
         "react": "19.3.0",
         "react-dom": "19.3.0",
-        "undici": "8.12.3",
+        "undici": "8.12.4",
         "ws": "8.21.0",
         "yaml": "2.9.1",
       },
@@ -53,12 +54,30 @@
         "typescript": "5.9.3",
       },
     },
+    "apps/p3": {
+      "name": "@earendil-works/p3",
+      "version": "0.0.1",
+      "bin": {
+        "p3": "dist/p3.js",
+      },
+      "dependencies": {
+        "@earendil-works/chord": "1.6.0",
+        "@earendil-works/pi-schema": "1.6.0",
+        "@earendil-works/pi-telemetry": "1.6.0",
+        "esbuild": "0.28.2",
+        "ws": "8.21.0",
+      },
+      "devDependencies": {
+        "@earendil-works/pi-ai": "1.6.0",
+        "@earendil-works/pi-durable": "1.6.0",
+      },
+    },
     "packages/agent": {
       "name": "@earendil-works/pi-agent-core",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "dependencies": {
-        "@earendil-works/pi-ai": "1.5.2",
-        "@earendil-works/pi-schema": "1.5.2",
+        "@earendil-works/pi-ai": "1.6.0",
+        "@earendil-works/pi-schema": "1.6.0",
       },
       "devDependencies": {
         "@types/node": "22.19.19",
@@ -67,20 +86,20 @@
     },
     "packages/ai": {
       "name": "@earendil-works/pi-ai",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "bin": {
         "pi-ai": "dist/cli.js",
       },
       "dependencies": {
         "@anthropic-ai/sdk": "0.129.0",
         "@aws-sdk/client-bedrock-runtime": "3.1127.0",
-        "@earendil-works/pi-schema": "1.5.2",
-        "@earendil-works/pi-telemetry": "1.5.2",
-        "@google/genai": "2.21.0",
+        "@earendil-works/pi-schema": "1.6.0",
+        "@earendil-works/pi-telemetry": "1.6.0",
+        "@google/genai": "2.32.0",
         "@smithy/node-http-handler": "4.12.1",
         "http-proxy-agent": "9.1.0",
         "https-proxy-agent": "9.1.0",
-        "openai": "7.19.0",
+        "openai": "7.59.0",
         "partial-json": "0.1.7",
       },
       "devDependencies": {
@@ -92,10 +111,10 @@
     },
     "packages/chord": {
       "name": "@earendil-works/chord",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "dependencies": {
-        "@earendil-works/pi-schema": "1.5.2",
-        "@earendil-works/pi-telemetry": "1.5.2",
+        "@earendil-works/pi-schema": "1.6.0",
+        "@earendil-works/pi-telemetry": "1.6.0",
       },
       "devDependencies": {
         "@types/react": "19.2.14",
@@ -107,9 +126,9 @@
         "ws": "8.21.0",
       },
       "peerDependencies": {
-        "esbuild": "0.28.2",
-        "react": "19.3.0",
-        "ws": "8.21.0",
+        "esbuild": "^0.28.2",
+        "react": "^19.3.0",
+        "ws": "^8.21.0",
       },
       "optionalPeers": [
         "esbuild",
@@ -123,7 +142,7 @@
     },
     "packages/codemode": {
       "name": "@earendil-works/pi-codemode",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "dependencies": {
         "quickjs-wasi": "3.6.2",
       },
@@ -133,16 +152,16 @@
     },
     "packages/coding-agent": {
       "name": "@earendil-works/pi-coding-agent",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "bin": {
         "pi": "dist/bundle/cli.js",
       },
       "dependencies": {
-        "@earendil-works/pi-agent-core": "1.5.2",
-        "@earendil-works/pi-ai": "1.5.2",
-        "@earendil-works/pi-codemode": "1.5.2",
-        "@earendil-works/pi-mcp": "1.5.2",
-        "@earendil-works/pi-tui": "1.5.2",
+        "@earendil-works/pi-agent-core": "1.6.0",
+        "@earendil-works/pi-ai": "1.6.0",
+        "@earendil-works/pi-codemode": "1.6.0",
+        "@earendil-works/pi-mcp": "1.6.0",
+        "@earendil-works/pi-tui": "1.6.0",
         "@silvia-odwyer/photon-node": "0.3.4",
         "brace-expansion": "5.0.12",
         "chalk": "6.0.0",
@@ -158,7 +177,7 @@
         "quickjs-wasi": "3.6.2",
         "semver": "7.8.5",
         "typebox": "1.3.27",
-        "undici": "8.12.3",
+        "undici": "8.12.4",
         "yaml": "2.9.0",
       },
       "devDependencies": {
@@ -177,10 +196,6 @@
       "dependencies": {
         "@anthropic-ai/sdk": "0.52.0",
       },
-    },
-    "packages/coding-agent/examples/extensions/custom-provider-gitlab-duo": {
-      "name": "pi-extension-custom-provider-gitlab-duo",
-      "version": "1.5.2",
     },
     "packages/coding-agent/examples/extensions/gondolin": {
       "name": "pi-extension-gondolin",
@@ -201,13 +216,13 @@
     },
     "packages/durable": {
       "name": "@earendil-works/pi-durable",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "dependencies": {
-        "@earendil-works/chord": "1.5.2",
-        "@earendil-works/pi-ai": "1.5.2",
-        "@earendil-works/pi-codemode": "1.5.2",
-        "@earendil-works/pi-schema": "1.5.2",
-        "@earendil-works/pi-telemetry": "1.5.2",
+        "@earendil-works/chord": "1.6.0",
+        "@earendil-works/pi-ai": "1.6.0",
+        "@earendil-works/pi-codemode": "1.6.0",
+        "@earendil-works/pi-schema": "1.6.0",
+        "@earendil-works/pi-telemetry": "1.6.0",
         "@silvia-odwyer/photon": "0.3.3",
         "diff": "8.0.4",
       },
@@ -219,10 +234,10 @@
     },
     "packages/env": {
       "name": "@earendil-works/pi-env",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "dependencies": {
-        "@earendil-works/chord": "1.5.2",
-        "@earendil-works/pi-durable": "1.5.2",
+        "@earendil-works/chord": "1.6.0",
+        "@earendil-works/pi-durable": "1.6.0",
       },
       "devDependencies": {
         "vitest": "4.1.12",
@@ -230,10 +245,10 @@
     },
     "packages/evals": {
       "name": "@earendil-works/pi-evals",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "devDependencies": {
-        "@earendil-works/pi-ai": "1.5.2",
-        "@earendil-works/pi-coding-agent": "1.5.2",
+        "@earendil-works/pi-ai": "1.6.0",
+        "@earendil-works/pi-coding-agent": "1.6.0",
         "@types/node": "22.19.19",
         "@vitest-evals/core": "0.15.0",
         "vitest": "4.1.12",
@@ -242,7 +257,7 @@
     },
     "packages/mcp": {
       "name": "@earendil-works/pi-mcp",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "dependencies": {
         "cross-spawn": "7.0.6",
       },
@@ -253,7 +268,7 @@
     },
     "packages/schema": {
       "name": "@earendil-works/pi-schema",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "devDependencies": {
         "@cfworker/json-schema": "4.1.1",
         "@oh-my-pi/omptype": "18.13.3",
@@ -267,7 +282,7 @@
     },
     "packages/telemetry": {
       "name": "@earendil-works/pi-telemetry",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "devDependencies": {
         "@types/node": "22.19.19",
         "vitest": "4.1.12",
@@ -275,7 +290,7 @@
     },
     "packages/tui": {
       "name": "@earendil-works/pi-tui",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "dependencies": {
         "get-east-asian-width": "1.6.0",
         "marked": "18.0.11",
@@ -421,6 +436,8 @@
 
     "@earendil-works/gondolin-krun-runner-linux-x64": ["@earendil-works/gondolin-krun-runner-linux-x64@0.14.0", "", { "os": "linux", "cpu": "x64", "bin": { "gondolin-krun-runner": "bin/gondolin-krun-runner" } }, "sha512-91iw4smoOH/yOoAuQS6N2UZOxqSFwRhtk8rTyrokXBoWiWcveAzg4kHvnLcm40ZlNrWwzIDFrere4bkZeGDQcA=="],
 
+    "@earendil-works/p3": ["@earendil-works/p3@workspace:apps/p3"],
+
     "@earendil-works/pi-agent-core": ["@earendil-works/pi-agent-core@workspace:packages/agent"],
 
     "@earendil-works/pi-ai": ["@earendil-works/pi-ai@workspace:packages/ai"],
@@ -505,7 +522,7 @@
 
     "@floating-ui/utils": ["@floating-ui/utils@0.2.12", "", {}, "sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww=="],
 
-    "@google/genai": ["@google/genai@2.21.0", "", { "dependencies": { "google-auth-library": "^10.3.0", "p-retry": "^4.6.2", "protobufjs": "^7.5.4", "ws": "^8.18.0" }, "peerDependencies": { "@modelcontextprotocol/sdk": "^1.25.2" }, "optionalPeers": ["@modelcontextprotocol/sdk"] }, "sha512-+PDtco2/Z0ONdzCGekCoCT+O1VJS9xJQNN4XzQpXG/t3El/SWWMkCWlFRO1KmivOHPa4Q0VjUYu1HBKCZ/v33Q=="],
+    "@google/genai": ["@google/genai@2.32.0", "", { "dependencies": { "google-auth-library": "^10.3.0", "p-retry": "^4.6.2", "protobufjs": "^7.5.4", "ws": "^8.18.0" }, "peerDependencies": { "@modelcontextprotocol/sdk": "^1.25.2" }, "optionalPeers": ["@modelcontextprotocol/sdk"] }, "sha512-60c79uXpR0a47bmGqDxbXEBuQUalNmwo5mx5kqb91jIW4FoqpsLSt86DeVhRhtH5+s/16Wqxt3sXzFQn2U1OHQ=="],
 
     "@img/colour": ["@img/colour@1.1.0", "", {}, "sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ=="],
 
@@ -989,7 +1006,7 @@
 
     "once": ["once@1.4.0", "", { "dependencies": { "wrappy": "1" } }, "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w=="],
 
-    "openai": ["openai@7.19.0", "", { "peerDependencies": { "@aws-sdk/credential-provider-node": ">=3.972.0 <4", "@smithy/hash-node": ">=4.3.0 <5", "@smithy/signature-v4": ">=5.4.0 <6", "undici": ">=5 <9", "ws": "^8.21.0", "zod": "^3.25 || ^4.0" }, "optionalPeers": ["@aws-sdk/credential-provider-node", "@smithy/hash-node", "@smithy/signature-v4", "undici", "ws", "zod"] }, "sha512-MX2s3u2L5racTO0CC/SWpCOasJQBCJrqLKXK+l82cAhdeF8mPMBEe/gxMm0ZFa2xpKpOFLRjxv5afYEZbBXmbQ=="],
+    "openai": ["openai@7.59.0", "", { "peerDependencies": { "@aws-sdk/credential-provider-node": ">=3.972.0 <4", "@smithy/hash-node": ">=4.3.0 <5", "@smithy/signature-v4": ">=5.4.0 <6", "google-auth-library": ">=9.15.1 <12", "undici": ">=5 <9", "ws": "^8.21.0", "zod": "^3.25 || ^4.0" }, "optionalPeers": ["@aws-sdk/credential-provider-node", "@smithy/hash-node", "@smithy/signature-v4", "google-auth-library", "undici", "ws", "zod"] }, "sha512-wPYKJkLPFEdNJ2tThSg4jE1Ptsv4X3u8g8LIvu0Qz/UIhsKeCzl73rl48PtQsDVrJL/ku0liXOsbyd2TsRsPJw=="],
 
     "p-retry": ["p-retry@4.6.2", "", { "dependencies": { "@types/retry": "0.12.0", "retry": "^0.13.1" } }, "sha512-312Id396EbJdvRONlngUx0NydfrIQ5lsYu0znKVUzVvArzEIt08V1qhtyESbGVd1FGX7UKtiFp5uwKZdM8wIuQ=="],
 
@@ -1004,8 +1021,6 @@
     "pathe": ["pathe@2.0.3", "", {}, "sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w=="],
 
     "pi-extension-custom-provider-anthropic": ["pi-extension-custom-provider-anthropic@workspace:packages/coding-agent/examples/extensions/custom-provider-anthropic"],
-
-    "pi-extension-custom-provider-gitlab-duo": ["pi-extension-custom-provider-gitlab-duo@workspace:packages/coding-agent/examples/extensions/custom-provider-gitlab-duo"],
 
     "pi-extension-gondolin": ["pi-extension-gondolin@workspace:packages/coding-agent/examples/extensions/gondolin"],
 
@@ -1111,7 +1126,7 @@
 
     "typescript": ["typescript@7.0.2", "", { "optionalDependencies": { "@typescript/typescript-aix-ppc64": "7.0.2", "@typescript/typescript-darwin-arm64": "7.0.2", "@typescript/typescript-darwin-x64": "7.0.2", "@typescript/typescript-freebsd-arm64": "7.0.2", "@typescript/typescript-freebsd-x64": "7.0.2", "@typescript/typescript-linux-arm": "7.0.2", "@typescript/typescript-linux-arm64": "7.0.2", "@typescript/typescript-linux-loong64": "7.0.2", "@typescript/typescript-linux-mips64el": "7.0.2", "@typescript/typescript-linux-ppc64": "7.0.2", "@typescript/typescript-linux-riscv64": "7.0.2", "@typescript/typescript-linux-s390x": "7.0.2", "@typescript/typescript-linux-x64": "7.0.2", "@typescript/typescript-netbsd-arm64": "7.0.2", "@typescript/typescript-netbsd-x64": "7.0.2", "@typescript/typescript-openbsd-arm64": "7.0.2", "@typescript/typescript-openbsd-x64": "7.0.2", "@typescript/typescript-sunos-x64": "7.0.2", "@typescript/typescript-win32-arm64": "7.0.2", "@typescript/typescript-win32-x64": "7.0.2" }, "bin": { "tsc": "bin/tsc" } }, "sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA=="],
 
-    "undici": ["undici@8.12.3", "", {}, "sha512-+fdndUTwBP86cVjihTp21hZHo7d6oj1c/47XPA3lL8mM0XHs+C4EkcjmgRsFnFk2f/UONGDy9ItBItmXsLOQHw=="],
+    "undici": ["undici@8.12.4", "", {}, "sha512-8Mx+uNKKER2bA4AdtedkqRbwUCIJFr2nJckXRe5yrDqzePqwLP7VNcctN8/XdmDSbF7mS+jJKIszlL+vbam1VA=="],
 
     "undici-types": ["undici-types@6.21.0", "", {}, "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="],
 
