@@ -19,19 +19,19 @@
       "name": "p2",
       "version": "0.0.3",
       "dependencies": {
-        "@earendil-works/chord": "1.6.1",
+        "@earendil-works/chord": "1.7.0",
         "@earendil-works/design-tokens": "0.1.0",
         "@earendil-works/elanor-fonts": "0.1.0",
         "@earendil-works/elanor-icons-react": "0.1.0",
         "@earendil-works/elanor-react": "0.1.0",
-        "@earendil-works/pi-ai": "1.6.1",
-        "@earendil-works/pi-codemode": "1.6.1",
-        "@earendil-works/pi-durable": "1.6.1",
-        "@earendil-works/pi-env": "1.6.1",
-        "@earendil-works/pi-mcp": "1.6.1",
-        "@earendil-works/pi-schema": "1.6.1",
-        "@earendil-works/pi-telemetry": "1.6.1",
-        "@earendil-works/pi-tui": "1.6.1",
+        "@earendil-works/pi-ai": "1.7.0",
+        "@earendil-works/pi-codemode": "1.7.0",
+        "@earendil-works/pi-durable": "1.7.0",
+        "@earendil-works/pi-env": "1.7.0",
+        "@earendil-works/pi-mcp": "1.7.0",
+        "@earendil-works/pi-schema": "1.7.0",
+        "@earendil-works/pi-telemetry": "1.7.0",
+        "@earendil-works/pi-tui": "1.7.0",
         "diff": "8.0.4",
         "discord.js": "14.28.1",
         "esbuild": "0.28.2",
@@ -61,23 +61,33 @@
         "p3": "dist/p3.js",
       },
       "dependencies": {
-        "@earendil-works/chord": "1.6.1",
-        "@earendil-works/pi-schema": "1.6.1",
-        "@earendil-works/pi-telemetry": "1.6.1",
+        "@earendil-works/chord": "1.7.0",
+        "@earendil-works/design-tokens": "0.1.0",
+        "@earendil-works/elanor-fonts": "0.1.0",
+        "@earendil-works/elanor-icons-react": "0.1.0",
+        "@earendil-works/elanor-react": "0.1.1",
+        "@earendil-works/pi-ai": "1.7.0",
+        "@earendil-works/pi-durable": "1.7.0",
+        "@earendil-works/pi-env": "1.7.0",
+        "@earendil-works/pi-schema": "1.7.0",
+        "@earendil-works/pi-telemetry": "1.7.0",
         "esbuild": "0.28.2",
+        "react": "19.3.0",
+        "react-dom": "19.3.0",
         "ws": "8.21.0",
+        "yaml": "2.9.0",
       },
       "devDependencies": {
-        "@earendil-works/pi-ai": "1.6.1",
-        "@earendil-works/pi-durable": "1.6.1",
+        "@types/react": "19.2.14",
+        "@types/react-dom": "19.2.3",
       },
     },
     "packages/agent": {
       "name": "@earendil-works/pi-agent-core",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "dependencies": {
-        "@earendil-works/pi-ai": "1.6.1",
-        "@earendil-works/pi-schema": "1.6.1",
+        "@earendil-works/pi-ai": "1.7.0",
+        "@earendil-works/pi-schema": "1.7.0",
       },
       "devDependencies": {
         "@types/node": "22.19.19",
@@ -86,7 +96,7 @@
     },
     "packages/ai": {
       "name": "@earendil-works/pi-ai",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "bin": {
         "pi-ai": "dist/cli.js",
       },
@@ -94,8 +104,8 @@
         "@anthropic-ai/sdk": "0.129.0",
         "@aws-sdk/client-bedrock-runtime": "3.1127.0",
         "@aws-sdk/credential-provider-node": "3.972.82",
-        "@earendil-works/pi-schema": "1.6.1",
-        "@earendil-works/pi-telemetry": "1.6.1",
+        "@earendil-works/pi-schema": "1.7.0",
+        "@earendil-works/pi-telemetry": "1.7.0",
         "@google/genai": "3.6.1",
         "@smithy/node-http-handler": "4.12.1",
         "http-proxy-agent": "9.1.0",
@@ -112,10 +122,10 @@
     },
     "packages/chord": {
       "name": "@earendil-works/chord",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "dependencies": {
-        "@earendil-works/pi-schema": "1.6.1",
-        "@earendil-works/pi-telemetry": "1.6.1",
+        "@earendil-works/pi-schema": "1.7.0",
+        "@earendil-works/pi-telemetry": "1.7.0",
       },
       "devDependencies": {
         "@types/react": "19.2.14",
@@ -143,7 +153,7 @@
     },
     "packages/codemode": {
       "name": "@earendil-works/pi-codemode",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "dependencies": {
         "quickjs-wasi": "3.6.2",
       },
@@ -153,16 +163,16 @@
     },
     "packages/coding-agent": {
       "name": "@earendil-works/pi-coding-agent",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "bin": {
         "pi": "dist/bundle/cli.js",
       },
       "dependencies": {
-        "@earendil-works/pi-agent-core": "1.6.1",
-        "@earendil-works/pi-ai": "1.6.1",
-        "@earendil-works/pi-codemode": "1.6.1",
-        "@earendil-works/pi-mcp": "1.6.1",
-        "@earendil-works/pi-tui": "1.6.1",
+        "@earendil-works/pi-agent-core": "1.7.0",
+        "@earendil-works/pi-ai": "1.7.0",
+        "@earendil-works/pi-codemode": "1.7.0",
+        "@earendil-works/pi-mcp": "1.7.0",
+        "@earendil-works/pi-tui": "1.7.0",
         "@silvia-odwyer/photon-node": "0.3.4",
         "brace-expansion": "5.0.12",
         "chalk": "6.0.0",
@@ -217,13 +227,13 @@
     },
     "packages/durable": {
       "name": "@earendil-works/pi-durable",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "dependencies": {
-        "@earendil-works/chord": "1.6.1",
-        "@earendil-works/pi-ai": "1.6.1",
-        "@earendil-works/pi-codemode": "1.6.1",
-        "@earendil-works/pi-schema": "1.6.1",
-        "@earendil-works/pi-telemetry": "1.6.1",
+        "@earendil-works/chord": "1.7.0",
+        "@earendil-works/pi-ai": "1.7.0",
+        "@earendil-works/pi-codemode": "1.7.0",
+        "@earendil-works/pi-schema": "1.7.0",
+        "@earendil-works/pi-telemetry": "1.7.0",
         "@silvia-odwyer/photon": "0.3.3",
         "diff": "8.0.4",
       },
@@ -235,10 +245,10 @@
     },
     "packages/env": {
       "name": "@earendil-works/pi-env",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "dependencies": {
-        "@earendil-works/chord": "1.6.1",
-        "@earendil-works/pi-durable": "1.6.1",
+        "@earendil-works/chord": "1.7.0",
+        "@earendil-works/pi-durable": "1.7.0",
       },
       "devDependencies": {
         "vitest": "4.1.12",
@@ -246,10 +256,10 @@
     },
     "packages/evals": {
       "name": "@earendil-works/pi-evals",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "devDependencies": {
-        "@earendil-works/pi-ai": "1.6.1",
-        "@earendil-works/pi-coding-agent": "1.6.1",
+        "@earendil-works/pi-ai": "1.7.0",
+        "@earendil-works/pi-coding-agent": "1.7.0",
         "@types/node": "22.19.19",
         "@vitest-evals/core": "0.15.0",
         "vitest": "4.1.12",
@@ -258,7 +268,7 @@
     },
     "packages/mcp": {
       "name": "@earendil-works/pi-mcp",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "dependencies": {
         "cross-spawn": "7.0.6",
       },
@@ -269,7 +279,7 @@
     },
     "packages/schema": {
       "name": "@earendil-works/pi-schema",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "devDependencies": {
         "@cfworker/json-schema": "4.1.1",
         "@oh-my-pi/omptype": "18.13.3",
@@ -283,7 +293,7 @@
     },
     "packages/telemetry": {
       "name": "@earendil-works/pi-telemetry",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "devDependencies": {
         "@types/node": "22.19.19",
         "vitest": "4.1.12",
@@ -291,7 +301,7 @@
     },
     "packages/tui": {
       "name": "@earendil-works/pi-tui",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "dependencies": {
         "get-east-asian-width": "1.6.0",
         "marked": "18.0.11",
@@ -429,7 +439,7 @@
 
     "@earendil-works/elanor-icons-react": ["@earendil-works/elanor-icons-react@0.1.0", "", { "peerDependencies": { "react": "^18.0.0 || ^19.0.0" } }, "sha512-Ri6xEWAvuhbKWgKcjphhxOMGAISKAyCAttQx4qlxflSORnGc0nPCA8pD0LsmmSCpdi/GmSJwUibPkwC0xn9BrQ=="],
 
-    "@earendil-works/elanor-react": ["@earendil-works/elanor-react@0.1.0", "", { "dependencies": { "@base-ui/react": "1.8.0", "@earendil-works/elanor-icons-react": "0.1.0" }, "peerDependencies": { "react": "^19.0.0", "react-dom": "^19.0.0" } }, "sha512-9zh26YB9Y64QOw//k4agAT9sWdYmE2unGavmUIHSDQRVIdfyVgdMXHCkgjEf1CTnmzCI069UnPWUdEmcS7RzUQ=="],
+    "@earendil-works/elanor-react": ["@earendil-works/elanor-react@0.1.1", "", { "dependencies": { "@base-ui/react": "1.8.0", "@earendil-works/elanor-icons-react": "0.1.0" }, "peerDependencies": { "react": "^19.0.0", "react-dom": "^19.0.0" } }, "sha512-k8GvkdEPIE8VQLiU/rZ2OEElaGN4xjLGRznGBMwBM2kMjfzQ8lVEFGlcnw7oS1jPX1gbOBRm9d1tQVfk94dC/A=="],
 
     "@earendil-works/gondolin": ["@earendil-works/gondolin@0.14.0", "", { "dependencies": { "cbor2": "^2.3.0", "ssh2": "^1.17.0", "undici": "^6.29.0" }, "optionalDependencies": { "@earendil-works/gondolin-krun-runner-darwin-arm64": "0.14.0", "@earendil-works/gondolin-krun-runner-linux-x64": "0.14.0" }, "bin": { "gondolin": "dist/bin/gondolin.js" } }, "sha512-MSw+EGcqFJeyKHdXEfm+nMRr74ytT4x8DGIohav0oPCHeVQAB9AajquM94cv2xqvIU3VDAaZZVC07IXsOY6OVQ=="],
 
@@ -1196,6 +1206,8 @@
     "p-retry/@types/retry": ["@types/retry@0.12.0", "", {}, "sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA=="],
 
     "p-retry/retry": ["retry@0.13.1", "", {}, "sha512-XQBQ3I8W1Cge0Seh+6gjj03LbmRFWuoszgK9ooCpwYIrhhoO80pfq4cUkU5DkknwfOfFteRwlZ56PYOGYyFWdg=="],
+
+    "p2/@earendil-works/elanor-react": ["@earendil-works/elanor-react@0.1.0", "", { "dependencies": { "@base-ui/react": "1.8.0", "@earendil-works/elanor-icons-react": "0.1.0" }, "peerDependencies": { "react": "^19.0.0", "react-dom": "^19.0.0" } }, "sha512-9zh26YB9Y64QOw//k4agAT9sWdYmE2unGavmUIHSDQRVIdfyVgdMXHCkgjEf1CTnmzCI069UnPWUdEmcS7RzUQ=="],
 
     "p2/marked": ["marked@18.0.14", "", { "bin": { "marked": "bin/marked.js" } }, "sha512-mBHK6FBHuBAlhgRe88w9F0O1AbwwXJUcQibUbC/QcdTbVGAD7aWza+xt3N6oT/jCZx3/OMeS+8rnuiHZcQ9s7A=="],
 

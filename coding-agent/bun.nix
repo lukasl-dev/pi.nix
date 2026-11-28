@@ -275,6 +275,10 @@
     url = "https://registry.npmjs.org/@earendil-works/elanor-react/-/elanor-react-0.1.0.tgz";
     hash = "sha512-9zh26YB9Y64QOw//k4agAT9sWdYmE2unGavmUIHSDQRVIdfyVgdMXHCkgjEf1CTnmzCI069UnPWUdEmcS7RzUQ==";
   };
+  "@earendil-works/elanor-react@0.1.1" = fetchurl {
+    url = "https://registry.npmjs.org/@earendil-works/elanor-react/-/elanor-react-0.1.1.tgz";
+    hash = "sha512-k8GvkdEPIE8VQLiU/rZ2OEElaGN4xjLGRznGBMwBM2kMjfzQ8lVEFGlcnw7oS1jPX1gbOBRm9d1tQVfk94dC/A==";
+  };
   "@earendil-works/gondolin-krun-runner-darwin-arm64@0.14.0" = fetchurl {
     url = "https://registry.npmjs.org/@earendil-works/gondolin-krun-runner-darwin-arm64/-/gondolin-krun-runner-darwin-arm64-0.14.0.tgz";
     hash = "sha512-fvuhz1CZPaEbmXC0luZoXd1obAb0bjaaGJz33Jo63bhMlosYunAahItakh7cU0dnTlNFzufOSnpGOPqtuYjnpQ==";
